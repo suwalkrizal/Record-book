@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Daily Savings Totals</title>
+</head>
+<body>
+    <h1>Group Savings Summary</h1>
+
+    <form method="get">
+        <label for="date">Select Stored Date:</label>
+        <select name="date" id="date">
+            <option value="">-- Choose a date --</option>
+            {% for date in available_dates %}
+                <option value="{{ date|date:'Y-m-d' }}" {% if selected_date == date|date:'Y-m-d' %}selected{% endif %}>
+                    {{ date|date:'Y-m-d' }}
+                </option>
+            {% endfor %}
+        </select>
+        <button type="submit">View Total</button>
+    </form>
+
+    {% if selected_date %}
+        <h2>Total for {{ selected_date }}: {{ daily_total }}</h2>
+        <h3>Records on {{ selected_date }}</h3>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Member</th>
+                    <th>Saving Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for record in records_for_day %}
+                <tr>
+                    <td>{{ record.member.name }}</td>
+                    <td>{{ record.saving_amount }}</td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="2">No records for this day.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+
+    <h2>Grand Total (All Time): {{ grand_total }}</h2>
+</body>
+</html>

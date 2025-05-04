@@ -20,10 +20,8 @@ class Record(models.Model):
         return f"{self.member.name} - {self.month.strftime('%B %Y')}"
 
     @staticmethod
-    def monthly_total(month):
-        return Record.objects.filter(
-            month__year=month.year, month__month=month.month
-        ).aggregate(total=models.Sum('saving_amount'))['total'] or 0
+    def daily_total(date):
+        return Record.objects.filter(month=date).aggregate(total=models.Sum('saving_amount'))['total'] or 0
 
     @staticmethod
     def grand_total():
