@@ -3,6 +3,7 @@ from django.utils.timezone import now
 
 class GroupMember(models.Model):
     name = models.CharField(max_length=100)
+    email = models.EmailField()
 
     def __str__(self):
         return self.name
@@ -39,12 +40,3 @@ class DepositedBy(models.Model):
 
     def __str__(self):
         return f"{self.person} - {self.amount_deposited} - {self.related_month.strftime('%B %Y')}"
-    
-# models.py
-# class GrandTotal(models.Model):
-#     total = models.DecimalField(max_digits=12, decimal_places=2, default=0.00)
-
-#     def __str__(self):
-#         return f"Grand Total: {self.total}"
-
-

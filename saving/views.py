@@ -6,6 +6,11 @@ from .serializers import *
 from datetime import datetime
 from django.shortcuts import render
 
+from django.core.mail import send_mail
+from django.conf import settings
+
+from threading import Thread
+
 
 class GroupMemberViewSet(viewsets.ModelViewSet):
     queryset = GroupMember.objects.all()
@@ -54,3 +59,37 @@ class RecordViewSet(viewsets.ModelViewSet):
 class DepositedByViewSet(viewsets.ModelViewSet):
     queryset = DepositedBy.objects.all()
     serializer_class = DepositedBySerializer
+    
+    def create(self, request, *args, **kwargs):
+        response = super().create(request, *args, **kwargs)
+        
+        depositor_name = request.data.get('person')
+        amount = request.data.get('amount_deposited')
+
+        # Get all group member emails
+        recipient_list = list(GroupMember.objects.values_list('email', flat=True))
+
+        subject = "New Deposit Notification"
+        message = f"{depositor_name} has deposited Rs{amount}."
+        
+        def send_email():
+            if recipient_list:
+                send_mail(
+                    subject,
+                    message,
+                    settings.DEFAULT_FROM_EMAIL,
+                    recipient_list,
+                    fail_silently=False,
+                )
+            
+        # Run the email in a separate thread
+        Thread(target=send_email).start()
+
+        return response
+    
+    
+def login_view(request):
+    if request.method == 'POST':
+        # Handle authentication logic here
+        pass
+    return render(request, 'signup.html')

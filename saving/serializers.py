@@ -20,12 +20,3 @@ class DepositedBySerializer(serializers.ModelSerializer):
         model = DepositedBy
         fields = '__all__'
 
-# class GrandTotalSerializer(serializers.ModelSerializer):
-#     total = serializers.SerializerMethodField()
-
-#     class Meta:
-#         model = GrandTotal
-#         fields = '__all__'
-
-#     def get_total(self, obj):
-#         return obj.total()  # This will use the `total` method in the GrandTotal model
