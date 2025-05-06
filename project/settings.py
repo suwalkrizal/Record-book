@@ -30,6 +30,8 @@ SECRET_KEY = 'django-insecure--^@e9ibeq9k+0!0eje5s)7k1ggpzp#nyedwz8g_ilxftl5!urf
 DEBUG = True
 
 ALLOWED_HOSTS = []
+AUTH_USER_MODEL = 'user.User'
+
 
 
 # Application definition
@@ -45,6 +47,10 @@ INSTALLED_APPS = [
     'saving',
     'rest_framework',
     'django_filters',
+    
+    'user',
+    'rest_framework.authtoken',
+    'djoser',
     
 ]
 
@@ -125,6 +131,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
@@ -139,3 +146,22 @@ EMAIL_HOST_USER = 'krijalsuwal367@gmail.com'
 EMAIL_HOST_PASSWORD = 'vcxi yahn oukn olmp'  # Use an App Password or env var
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 # 'vcxi yahn oukn olmp'/
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+    # 'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
+
+DJOSER = {
+    "LOGIN_FIELD": "email",
+    "USER_CREATE_PASSWORD_RETYPE": True,
+    "USER_LOGIN_USERNAME_PASSWORD": True,
+    "SEND_ACTIVATION_EMAIL": False,
+    "SERIALIZERS": {
+        "user_create": "user.serializers.CustomUserCreateSerializer",
+        "user": "user.serializers.CustomUserCreateSerializer",
+        "current_user": "user.serializers.CustomUserCreateSerializer",
+    },
+}
