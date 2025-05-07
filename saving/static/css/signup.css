@@ -79,8 +79,10 @@
   
   @media (max-width: 600px) {
     .container {
-      margin: 0 50px;
-      width: 100%;
+    width: 90%;            /* Make it responsive */
+    margin: 0 auto;        /* Center it horizontally */
+    padding: 40px;      /* Optional: add side spacing */
+    box-sizing: border-box;
     }
   }
   
